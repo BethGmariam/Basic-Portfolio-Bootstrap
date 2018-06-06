@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Psycic Game</title> <!-- B for boot strap -->
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css"> <!-- my style sheet for bootstrap portfolio -->
+
+     
+
+</head>
+
+<body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-static-top"> <!-- use navbar-fixed-top to fix the header to the top-->
+          <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html"> Beth </a> 
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav navbar-right">
+              <li> <a href="index.html"> About</a> </li> <!--adding class active to li makes this link active.-->
+              <li> <a href="portfolio.html">Portfolio</a> </li>
+              <li> <a href="contact.html">Contact</a> </li>
+            </ul>
+            </div>
+          </div>
+        </nav>
+  
+  <body>
+
+    <div class="container">
+      <div class="row">       
+        <div class="col-sm-8" style="background-color:white; margin-left:none; margin-top:90px">
+            <h1> Are you Psycic? </h1> 
+          <ul class="list-group" style="padding:15px;">
+            <li class="list-group-item">Wins: <span id="wins"> </span>	</li>
+            <li class="list-group-item">Losses: <span id="losses"> </span> </li>
+            <li class="list-group-item">Guesse's left: <span id="guessesLeft"> </span> </li>
+            <li class="list-group-item active" style="background-color:#777">Your Guesses:<span type="text" id="yourGuesses">  </span> </li>
+            <li class="list-group-item">Your Guesses so far:<span type="text" id="yourGuessesSofar">  </span> </li>
+            <button type="button" class="btn btn-info" style="margin-top:50px;margin-right:390px;padding:15px" onclick="gameInstruction()">
+              Click here for instruction
+            </button> 
+            <button type="button" class="btn btn-secondary" style="margin-top:50px;padding:15px" onclick="resetFunction()">
+                Click here to reset
+              </button> 
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <div class="jumbotron psycicGame"><p style="color:#4aaaa5; font-size:18px"> Myth about Psycic </p> <hr>
+            <p style="font-size:20px; color:#777"> "Testing a psychic is a good way of judging their ability." which is not true.
+                so have fun playing the game boohoo.</p>
+          </div>
+        </div>
+      </div>
+
+      
+
+    </div>
+      
+<script> // start of javaScript
+ 
+  
+     
+    // reference to the <span> from the HTML page & assigning variable to each element id
+  var elewins = document.getElementById("wins");
+  var elelosses = document.getElementById("losses");
+  var eleguessesLeft = document.getElementById("guessesLeft");
+  var eleyourGuesses = document.getElementById("yourGuesses");
+  var eleyourGuessesSofar = document.getElementById("yourGuessesSofar");
+
+
+        
+       
+ 
+  // declare and initializing variables for each list items in the HTML file
+  var winsCounter =0;
+  var lossesCounter=0;
+  var guessesLeftCounter=9;
+
+
+  
+    // update the content of our HTML with the inital value; these values will later get updated as user play. 
+  elewins.textContent = winsCounter;
+  elelosses.textContent=lossesCounter;
+  eleguessesLeft.textContent =guessesLeftCounter;
+ 
+
+ function compGuess() {
+    var text = "";
+    var possible = "abcdefghijklmnopqrstuvwxyz";
+    text = possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+ };
+
+
+var yourGuessesSofar = []; // array to store user input for his/reference on what was already pressed
+
+document.onkeyup = function(event) {
+       
+        var userGuessVar= event.key; // user input triggered when any key pressed
+        if(userGuessVar >=0){ alert("wrong entry! please press letters (a-z)")} // use only letters 
+
+        else {
+            guessesLeftCounter--; // reduce guesses left counter by 1 after key pressed.
+            yourGuessesSofar.push(event.key);// keep every key input into array called yourGuessesSofar
+        
+        var compGuessVar= compGuess();// use the compGuess function above to generate random letter
+         
+        if(compGuessVar== userGuessVar){ // compare userGuess with computer generated random letter
+           winsCounter++;
+        }
+        else{
+           lossesCounter++;
+        }
+  // update HTML element values accordingly      
+        eleyourGuesses.textContent = "  "+ event.key; // user guess is key input.
+        elewins.textContent=winsCounter;
+        elelosses.textContent=lossesCounter;
+        eleguessesLeft.textContent = guessesLeftCounter;
+        eleyourGuessesSofar.textContent = yourGuessesSofar;
+
+// reset everything at the end of the game.
+        if(guessesLeftCounter <= 0){
+          if(winsCounter > 6){
+            alert("you are a Psycic");
+          }else{
+            alert("You are not a Psycic");
+          }
+          guessesLeftCounter = 9;
+          winsCounter = 0;
+          lossesCounter = 0;
+          yourGuessesSofar.length=0;
+          eleguessesLeft.textContent = guessesLeftCounter;
+          elewins.textContent=winsCounter;
+          elelosses.textContent=lossesCounter;
+          eleyourGuesses.textContent=""
+          // yourGuessesSofar = [];
+          eleyourGuessesSofar.textContent = "";
+        }
+      }
+        
+      };
+
+
+// instruction button 
+    function gameInstruction() {
+      window.alert("Here is how it works, you guess a letter upto 9 times. If your guess matches with the computer guess (minimum 6times), you are a psycic");
+    }
+
+// restart buttom incase player wants to start again in the middle of the game.
+    function resetFunction() {
+      var confirmRestart = confirm("are you sure you want to start over ?");
+      if (confirmRestart==true){
+      guessesLeftCounter = 9;
+          winsCounter = 0;
+          lossesCounter = 0;
+          yourGuessesSofar.length=0;
+
+          eleguessesLeft.textContent = guessesLeftCounter;
+          elewins.textContent=winsCounter;
+          elelosses.textContent=lossesCounter;
+          eleyourGuesses.textContent=""
+          // yourGuessesSofar = [];
+          eleyourGuessesSofar.textContent = "";
+        }
+      
+    }   
+
+  </script>  <!--end of javaScript -->
+  
+  
+
+  <footer class="footer">
+      <div class="container">
+        <span class="text-muted"> Copyright &copy;</span>
+      </div>
+</footer>
+  
+
+</body>
+</html>
