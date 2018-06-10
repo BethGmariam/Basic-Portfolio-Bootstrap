@@ -93,46 +93,47 @@
 
  function compGuess() {
     var text = "";
-    var possible = "abcdefghijklmnopqrstuvwxyz";
+    var possible = "ab"; // took out efghijklmnopqrstuvwxyz to increase probability of winning 
     text = possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
  };
 
 
+ var compGuessVar= compGuess(); 
+
 var yourGuessesSofar = []; // array to store user input for his/reference on what was already pressed
 
 document.onkeyup = function(event) {
        
-        var userGuessVarK= event.keyCode; // user limited to input alphabet only
-        var userGuessVar=event.key;// user input triggered when any key pressed
-       if(!((userGuessVarK>=65 && userGuessVarK<= 90) || (userGuessVarK>= 95 && userGuessVarK<= 122)))
-        { alert("wrong entry! please press letters (a-z)")} // use only letters 
+        var userGuessVar= event.keyCode; // user input triggered when any key pressed
+        if((userGuessVar>=65 && userGuessVar<= 90) || (userGuessVar>= 95 && userGuessVar<= 122)) // use only letters 
 
-        else {
+        {
             guessesLeftCounter--; // reduce guesses left counter by 1 after key pressed.
             yourGuessesSofar.push(event.key);// keep every key input into array called yourGuessesSofar
         
         var compGuessVar= compGuess();// use the compGuess function above to generate random letter
          
-        if(compGuessVar== userGuessVar){ // compare userGuess with computer generated random letter
+        if(compGuessVar==userGuessVar){ // compare userGuess with computer generated random letter
            winsCounter++;
         }
         else{
            lossesCounter++;
         }
+ 
   // update HTML element values accordingly      
         eleyourGuesses.textContent = "  "+ event.key; // user guess is key input.
         elewins.textContent=winsCounter;
         elelosses.textContent=lossesCounter;
         eleguessesLeft.textContent = guessesLeftCounter;
         eleyourGuessesSofar.textContent = yourGuessesSofar;
-        //alert(guessesLeftCounter);
-        
+
 // reset everything at the end of the game.
-        if(guessesLeftCounter < 0){
-          if(winsCounter > 6){
+        if(guessesLeftCounter<=0){
+          if(winsCounter > 1){
             alert("you are Psychic");
-          }else{
+          }
+          else{
             alert("You are not Psychic");
           }
           guessesLeftCounter = 9;
@@ -142,10 +143,13 @@ document.onkeyup = function(event) {
           eleguessesLeft.textContent = guessesLeftCounter;
           elewins.textContent=winsCounter;
           elelosses.textContent=lossesCounter;
-          eleyourGuesses.textContent=""
-          // yourGuessesSofar = [];
+          eleyourGuesses.textContent="";
+      
           eleyourGuessesSofar.textContent = "";
         }
+      }
+      else{
+        alert('wrong key pressed; Please use alphabet only');
       }
         
       };
@@ -160,7 +164,7 @@ document.onkeyup = function(event) {
     function resetFunction() {
       var confirmRestart = confirm("are you sure you want to start over ?");
       if (confirmRestart==true){
-      guessesLeftCounter = 9;
+          guessesLeftCounter = 9;
           winsCounter = 0;
           lossesCounter = 0;
           yourGuessesSofar.length=0;
